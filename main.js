@@ -1,34 +1,51 @@
-//Entry point
+//Libs
+const Fs       = require("fs");       //File system
+const Electron = require("electron"); //Electron - Gui
+const Child    = require("child_proccess");           //Sub Proc
 
-const Electron = require("electron");
-const Fs       = require("fs");
-const Child    = require("child_proccess");
-
-//Entry class
 class UCmd{
-    //Setup class
-    constructor(Config){
-        //Setup config
-        this.Config = Config;
+  //Constructor
+  constructor(Config){
+    //Settings
+    this.Config     = Config;
+
+    //Electron
+    this.App        = Electron.app();
+    this.MainWindow = null;
+
+  }
+
+  SetupMainWindow(){
+    //Setup main window
+    this.MainWindow = new Electron.BrowserWindow({
+      width:  800,
+      height: 600,
+      frame:  false
+    });
 
 
-        //Setup Electron 
+    //Load html File
+    this.MainWindow.loadFile();
 
+    //Add close emitter
+    this.MainWindow.on("closed", function(){
+      //Clear window
+      this.MainWindow = null;
+    });
+  }
 
+  Start(){
+    //Setup app
+    this.App.on("ready", App.SetupMainWindow);
 
-    }
-
-    //Start the actual program
-    Start(){}
+  }
 
 
 }
 
-//Create settings
-let Config = JSON.parse(fs.readFileSync("./config.json"));
+//Config
+let Config = JSON.parse(Fs.readFileSync("./config.json"));
 
-//Create app
-const App = new UCmd(Config);
-
-//Start App
+//Create and start
+let App = new UCmd(Config);
 App.Start();
