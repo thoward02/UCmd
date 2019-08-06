@@ -1,0 +1,19 @@
+
+#AppHeader{}
+
+#App{}
+
+#AppFooter{}
+
+
+
+
+
+
+//For the entire body
+body {
+  width:    100%;
+  height:   100%;
+  margin:   0;
+  overflow: hidden;
+}
